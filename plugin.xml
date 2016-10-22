@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="pushe-cordova-plugin"
+    version="0.1.0">
+    <name>PusheCordovaPlugin</name>
+    <description>Integration of Pushe library to Cordova</description>
+    <license>Apache 2.0</license>
+    <keywords>pushe,cordova</keywords>
+    <author>Akram Shokri</author>
+    
+    <js-module src="www/pushe4cordova.js" name="pushe">
+        <clobbers target="pushe" />
+    </js-module>
+    
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PusheCordovaPlugin" >
+                <param name="android-package" value="co.ronash.pushe.cordova.PusheCordovaPlugin"/>
+            </feature>
+        </config-file>
+
+		<preference name="PUSHE_TOKEN_CODE" default="PUSHE_378539785371" />
+		
+        <source-file src="src/PusheCordovaPlugin.java" target-dir="src/co/ronash/pushe/cordova" />
+        <framework src="src/pushebuild.gradle" custom="true" type="gradleReference" />
+        <resource-file src="pushe-lib/Pushe.aar" target="libs/Pushe.aar" />
+        <source-file src="src/sentry-android-1.2.2.jar" target-dir="libs" />
+        <source-file src="src/android-job-1.0.13.jar" target-dir="libs" />
+        <source-file src="src/cat-1.0.4.jar" target-dir="libs" />
+        <framework src="com.google.android.gms:play-services-gcm:9.4.0" />
+    
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+            <permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE"
+                         android:protectionLevel="signature" />
+            <uses-permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+            
+            <!-- Optional permissions -->
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <receiver android:name="co.ronash.pushe.receiver.UpdateReceiver" >
+                <intent-filter>
+                    <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                    <data
+                    android:path="$PACKAGE_NAME"
+                    android:scheme="package" />
+                </intent-filter>
+            </receiver>
+            <receiver
+                android:name="com.google.android.gms.gcm.GcmReceiver"
+                android:exported="true"
+                android:permission="com.google.android.c2dm.permission.SEND" >
+                <intent-filter>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                    
+                    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                    
+                    <category android:name="$PACKAGE_NAME" />
+                </intent-filter>
+            </receiver>
+            <service
+                android:name="co.ronash.pushe.service.GcmService"
+                android:exported="false" >
+                <intent-filter>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                </intent-filter>
+            </service>
+            
+            <receiver
+                android:name="co.ronash.pushe.receiver.FallbackGcmNetworkManagerReceiver"
+                android:exported="true" >
+                <intent-filter>
+                    <action android:name="co.ronash.pushe.CHECK_TASKS" />
+                </intent-filter>
+            </receiver>
+            
+            <service
+                android:name="co.ronash.pushe.service.FallbackGcmTaskRunner"
+                android:exported="false" >
+                <intent-filter>
+                    <action android:name="co.ronash.pushe.ACTION_TASK_READY" />
+                </intent-filter>
+            </service>
+            <service
+                android:name="co.ronash.pushe.task.scheduler.gcm.GcmTaskRunner"
+                android:exported="true"
+                android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE" >
+                <intent-filter>
+                    <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
+                </intent-filter>
+            </service>
+            <service
+                android:name="co.ronash.pushe.service.IntentTaskRunner"
+                android:exported="false" />
+            <service
+                android:name="co.ronash.pushe.service.InstanceIDService"
+                android:exported="false" >
+                <intent-filter>
+                    <action android:name="com.google.android.gms.iid.InstanceID" />
+                </intent-filter>
+            </service>
+            <activity
+                android:name="co.ronash.pushe.activities.PopupDialogActivity"
+                android:theme="@style/PusheTransparent" >
+            </activity>
+            
+            <service
+                android:name="co.ronash.pushe.cordova.PusheCordovaPlugin$CustomContentListener"
+                android:exported="false">
+                <intent-filter>
+                    <action android:name="co.ronash.pushe.RECEIVE" />
+                </intent-filter>
+            </service>
+            
+            
+            <receiver android:name="co.ronash.pushe.receiver.BootAndScreenReceiver" >
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                </intent-filter>
+            </receiver>
+            
+            <service android:name="co.ronash.pushe.service.ScreenStateService" >
+                <intent-filter>
+                    <action android:name="co.ronash.pushe.service.ScreenStateService" />
+                </intent-filter>
+            </service>
+            
+            <receiver android:name="co.ronash.pushe.receiver.PusheAppExistsReceiver" >
+                <intent-filter>
+                    <action android:name="co.ronash.pushe.NOTIFY_APP" />
+                </intent-filter>
+            </receiver>
+            
+            <activity android:name="co.ronash.pushe.activities.WebviewActivity" >
+            </activity>
+            <service
+                android:name="com.evernote.android.job.gcm.PlatformGcmService"
+                android:exported="true"
+                android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE" >
+                <intent-filter>
+                    <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
+                </intent-filter>
+            </service>
+            <!-- evernote services -->
+            <service  android:name="com.evernote.android.job.v21.PlatformJobService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+            <service android:name="com.evernote.android.job.v14.PlatformAlarmService"
+            android:exported="false" />
+            
+            <receiver
+                android:name="com.evernote.android.job.v14.PlatformAlarmReceiver"
+                android:exported="false" >
+                <intent-filter>
+                    
+                    <!-- Keep the filter for legacy intents -->
+                    <action android:name="com.evernote.android.job.v14.RUN_JOB" />
+                    <action android:name="net.vrallev.android.job.v14.RUN_JOB" />
+                </intent-filter>
+            </receiver>
+            
+            <receiver
+                android:name="com.evernote.android.job.JobBootReceiver"
+                android:exported="false" >
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                </intent-filter>
+            </receiver>
+            
+            
+            <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+            <meta-data android:name="co.ronash.pushe.token" android:value="$PUSHE_TOKEN_CODE"/>
+        </config-file>
+    
+    </platform>
+</plugin>
