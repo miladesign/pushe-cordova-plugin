@@ -1,0 +1,35 @@
+{
+  "name": "pushe-cordova-plugin",
+  "version": "1.1.0",
+  "description": "Integration of Pushe library to Cordova",
+  "cordova": {
+    "id": "pushe-cordova-plugin",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miladesign/pushe-cordova-plugin.git"
+  },
+  "keywords": [
+    "notification",
+    "plugin",
+    "push",
+    "pushe",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Milad Mohammadi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miladesign/pushe-cordova-plugin/issues"
+  },
+  "homepage": "https://github.com/miladesign/pushe-cordova-plugin#readme"
+}
