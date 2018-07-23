@@ -5,6 +5,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.PluginResult.Status;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,22 @@ public class PusheCordovaPlugin extends CordovaPlugin {
             setNotificationOff(callbackContext);
         else if ("setNotificationOn".equals(action))
             setNotificationOn(callbackContext);
+        else if ("isPusheInitialized".equals(action))
+            isPusheInitialized(callbackContext);
+        else if ("getPusheId".equals(action))
+            getPusheId(callbackContext);
+        
+        else if ("sendSimpleNotifToUser".equals(action))
+            sendSimpleNotifToUser(args, callbackContext); 
+        else if ("sendCustomJsonToUser".equals(action))
+            sendCustomJsonToUser(args, callbackContext);
+        else if ("sendAdvancedNotifToUser".equals(action))
+            sendAdvancedNotifToUser(args, callbackContext);
+        else if ("createNotificationChannel".equals(action))
+            createNotificationChannel(args, callbackContext);
+        else if ("removeNotificationChannel".equals(action))
+            removeNotificationChannel(args, callbackContext);
+            
         else if ("jsonCallback".equalsIgnoreCase(action))
             mCallback = callbackContext;
         return true;
@@ -78,8 +95,94 @@ public class PusheCordovaPlugin extends CordovaPlugin {
             callbackContext.error("Error in Pushe.setNotificationOn(). Error: " + e.getMessage());
         }
     }
+    
+    private void isPusheInitialized(CallbackContext callbackContext){
+        try {
+            boolean result = Pushe.isPusheInitialized(this.cordova.getActivity());
+            callbackContext.sendPluginResult(new PluginResult(Status.OK, result));
+            //callbackContext.success(String.valueOf(result));
+        } catch (Exception e) {
+            callbackContext.error("Error in Pushe.isPusheInitialized(). Error: " + e.getMessage());            
+        }
+    }
 
+    private void getPusheId(CallbackContext callbackContext){
+        try {
+            String pid = Pushe.getPusheId(this.cordova.getActivity());
+            callbackContext.sendPluginResult(new PluginResult(Status.OK, pid));
+        } catch (Exception e) {
+            callbackContext.error("Error in Pushe.getPusheId. Error: " + e.getMessage());
+        }
+    }
 
+    
+    private void sendSimpleNotifToUser(JSONArray args, CallbackContext callbackContext){
+        try {
+            String userPusheId = args.getString(0);
+            String title = args.getString(1);
+            String content = args.getString(2);
+            Pushe.sendSimpleNotifToUser(this.cordova.getActivity(), userPusheId, title, content);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error("Error in Pushe.sendSimpleNotifToUser(). Error: " + e.getMessage());
+        }
+        
+    }
+
+    private void sendAdvancedNotifToUser(JSONArray args, CallbackContext callbackContext){
+        try {
+            String userPusheId = args.getString(0);
+            String notificationJson = args.getString(1);
+            Pushe.sendAdvancedNotifToUser(this.cordova.getActivity(), userPusheId, notificationJson);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error("Error in Pushe.sendAdvancedNotifToUser(). Error: " + e.getMessage());
+        }
+        
+    }
+
+    private void sendCustomJsonToUser(JSONArray args, CallbackContext callbackContext){
+        try {
+            String userPusheId = args.getString(0);
+            String customJson = args.getString(1);
+            Pushe.sendCustomJsonToUser(this.cordova.getActivity(), userPusheId, customJson);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error("Error in Pushe.sendCustomJsonToUser(). Error: " + e.getMessage());
+        }
+    }
+    
+    private void createNotificationChannel(JSONArray args, CallbackContext callbackContext){
+        try {
+            String channelId = args.getString(0);
+            String channelName = args.getString(1);
+            String description = args.getString(2);
+            int importance = args.getInt(3);
+            boolean enableLight = args.getBoolean(4);
+            boolean enableVibration = args.getBoolean(5);
+            boolean showBadge = args.getBoolean(6);
+            int ledColor = args.getInt(7);
+            
+            Pushe.createNotificationChannel(this.cordova.getActivity(), channelId, channelName, description, importance, enableLight, enableVibration,
+                showBadge, ledColor, null /*vibration pattern*/);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error("Error in createNotificationChannel(). Error: " + e.getMessage());
+        }
+    }
+
+    private void removeNotificationChannel(JSONArray args, CallbackContext callbackContext){
+        try {
+            String channelId = args.getString(0);
+            
+            Pushe.removeNotificationChannel(this.cordova.getActivity(), channelId);
+            callbackContext.success();
+        } catch (Exception e) {
+            callbackContext.error("Error in createNotificationChannel(). Error: " + e.getMessage());
+        }
+    }
+
+    
     public static class CustomContentListener extends PusheListenerService {
         public CustomContentListener() {
         }
@@ -97,5 +200,4 @@ public class PusheCordovaPlugin extends CordovaPlugin {
 
         }
     }
-
 }

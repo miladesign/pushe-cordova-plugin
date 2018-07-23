@@ -6,6 +6,8 @@ repositories{
 
 dependencies {
    compile(name:'Pushe', ext:'aar')
+   compile(name:'play-services-base-11.8.0', ext:'aar')
+   compile(name:'play-services-basement-11.8.0', ext:'aar')
 }
 
 android {

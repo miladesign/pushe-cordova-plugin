@@ -53,13 +53,87 @@ console.log("pushe plugin loaded.");
                  },"PusheCordovaPlugin","setNotificationOn",[]);
     }
 
+    pushe.isPusheInitialized = function(pusheInited){
+        console.log("Executing Pushe.isPusheInitialized ...");
+        cordova.exec(function(result){
+                     console.log("Pushe.isPusheInitialized Execution succeeded", result);
+                     pusheInited(result);
+                 },
+                 function(result){
+                 /*alert("Error" + reply);*/
+                 },"PusheCordovaPlugin","isPusheInitialized",[]);
+    }
 
+    pushe.getPusheId = function(pidCallback){
+        console.log("Executing Pushe.getPusheId ...");
+        cordova.exec(function(result){
+                     console.log("Pushe.getPusheId Execution succeeded", result);
+                     pidCallback(result);
+                 },
+                 function(result){
+                 /*alert("Error" + reply);*/
+                 },"PusheCordovaPlugin","getPusheId",[]);
+    }
+
+
+    pushe.sendSimpleNotifToUser = function(userPusheId, title, content){
+        console.log("Executing Pushe.sendSimpleNotifToUser ...");
+        cordova.exec(function(result){
+                 console.log("Execution succeeded", result);
+                 },
+                 function(result){
+                 /*alert("Error" + reply);*/
+                 },"PusheCordovaPlugin","sendSimpleNotifToUser",[userPusheId, title, content]);
+    }
+
+    pushe.sendAdvancedNotifToUser = function(userPusheId, notificationJson){
+        console.log("Executing Pushe.sendAdvancedNotifToUser ...");
+        cordova.exec(function(result){
+                 console.log("Execution succeeded", result);
+                 },
+                 function(result){
+                 /*alert("Error" + reply);*/
+                 },"PusheCordovaPlugin","sendAdvancedNotifToUser",[userPusheId, notificationJson]);
+    }
+
+    pushe.sendCustomJsonToUser = function(userPusheId, customJson){
+        console.log("Executing Pushe.sendCustomJsonToUser ...");
+        cordova.exec(function(result){
+                 console.log("Execution succeeded", result);
+                 },
+                 function(result){
+                 /*alert("Error" + reply);*/
+                 },"PusheCordovaPlugin","sendCustomJsonToUser",[userPusheId, customJson]);
+    }
+
+    pushe.createNotificationChannel = function(channelId, channelName,
+              description, importance, enableLight,
+              enableVibration, showBadge, ledColor){
+              console.log("Executing Pushe.sendCustomJsonToUser ...");
+              cordova.exec(function(result){
+                   console.log("Execution succeeded", result);
+                 },
+                 function(result){
+                 /*alert("Error" + reply);*/
+                     },"PusheCordovaPlugin","createNotificationChannel",[channelId, channelName,
+                        description, importance, enableLight, enableVibration, showBadge, ledColor]);
+    }
+
+    pushe.removeNotificationChannel = function(channelId){
+        console.log("Executing Pushe.sendCustomJsonToUser ...");
+        cordova.exec(function(result){
+                 console.log("Execution succeeded", result);
+                 },
+                 function(result){
+                 /*alert("Error" + reply);*/
+                 },"PusheCordovaPlugin","removeNotificationChannel",[channelId]);
+    }
 
     pushe.jsonCallback = function(callbackToUser){
         console.log("Setting Json Callback");
         cordova.exec(function(jsonMsg){
                     console.log("JsonReceiver callback has been fired." + JSON.stringify(jsonMsg));
-                     callbackToUser(jsonMsg)
+                    callbackToUser(jsonMsg);
                  },
                  function(result){
                      /*alert("Error" + reply);*/
