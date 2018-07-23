@@ -1,19 +1,32 @@
 {
-  "name": "PusheCordovaPlugin",
-  "version": "1.3.1",
-  "description": "Integration of Pushe library to Cordova",
-  "cordova": {
-    "id": "pushe-cordova-plugin",
-    "platforms": [
-      "android"
-    ]
-  },
-  "keywords": [
-    "pushe",
-    "cordova",
-    "ecosystem:cordova",
-    "cordova-android"
-  ],
-  "author": "Akram Shokri",
-  "license": "Apache 2.0"
+	"name": "PusheCordovaPlugin",
+	"version": "1.4.0",
+	"description": "Integration of Pushe library to Cordova",
+	"cordova": {
+		"id": "pushe-cordova-plugin",
+		"platforms": [
+			"android"
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/miladesign/pushe-cordova-plugin.git"
+	},
+	"keywords": [
+		"pushe",
+		"cordova",
+		"ecosystem:cordova",
+		"cordova-android"
+	],
+	"devDependencies": {
+		"cordova": ">=3.0.0"
+	},
+	"engines": [
+		{
+			"name": "cordova",
+			"version": ">=3.0.0"
+		}
+	],
+	"author": "Milad Mohammadi Rezagah",
+	"license": "Apache 2.0"
 }

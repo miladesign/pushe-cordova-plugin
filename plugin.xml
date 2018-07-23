@@ -3,14 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="pushe-cordova-plugin"
     version="1.4.0">
+	
     <name>PusheCordovaPlugin</name>
     <description>Integration of Pushe library to Cordova</description>
+    <author>Milad Mohammadi Rezagah</author>
     <license>Apache 2.0</license>
     <keywords>pushe,cordova</keywords>
-    <author>Akram Shokri</author>
+    <repo>https://github.com/miladesign/pushe-cordova-plugin</repo>
+    <issue>https://github.com/miladesign/pushe-cordova-plugin/issues</issue>	
+	<engines>
+	    <engine name="cordova" version=">=3.0.0" />
+	</engines>
     
-    <js-module src="www/pushe4cordova.js" name="pushe">
-        <clobbers target="pushe" />
+    <js-module src="www/pushe.js">
+        <clobbers target="window.pushe" />
     </js-module>
     
     <!-- android -->
@@ -21,8 +27,8 @@
             </feature>
         </config-file>
 		
-		<preference name="PUSHE_TOKEN" default="pushe_token" />
-		<preference name="PUSHE_CR" default="pushe_cr" />
+		<preference name="PUSHE_TOKEN" default="PUSHE_TOKEN" />
+		<preference name="PUSHE_CR" default="PUSHE_CR" />
         
         <source-file src="src/PusheCordovaPlugin.java" target-dir="src/co/ronash/pushe/cordova" />
         <framework src="src/pushebuild.gradle" custom="true" type="gradleReference" />
