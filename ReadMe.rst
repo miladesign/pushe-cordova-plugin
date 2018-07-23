@@ -1,5 +1,5 @@
 ===================================================
-Pushe Cordova Plugin for Android Users v. 1.1.0
+Pushe Cordova Plugin for Android Users v. 1.4.0
 ===================================================
 
 This is a plugin for Pushe android library for Cordova and other Cordova-base users (like Ionic and PhoneGap) which enables them to integrate Pushe into their applications.
