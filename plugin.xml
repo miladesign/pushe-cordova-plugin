@@ -37,6 +37,7 @@
         <resource-file src="pushe-lib/play-services-basement-11.8.0.aar" target="libs/play-services-basement-11.8.0.aar" />
         
         <source-file src="src/android-job-1.2.4.jar" target-dir="libs" />
+        <source-file src="src/support-annotations-26.0.2.jar" target-dir="libs" />
         <source-file src="src/support-compat-26.0.2.jar" target-dir="libs" />
         <source-file src="src/support-core-ui-26.0.2.jar" target-dir="libs" />
         <source-file src="src/support-core-utils-26.0.2.jar" target-dir="libs" />
